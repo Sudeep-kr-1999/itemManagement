@@ -1,8 +1,11 @@
-import './App.css';
+import "./App.css";
+import Homepage from "./components/Homepage";
+import Navbar from "./components/Navbar";
 function App() {
   return (
     <div className="App">
-      Item management system
+      <Navbar />
+      <Homepage />
     </div>
   );
 }
