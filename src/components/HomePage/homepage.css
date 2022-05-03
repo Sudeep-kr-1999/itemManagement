@@ -11,3 +11,10 @@
     width: 30rem;
     height: 30rem;
 }
+.home-parent::after{
+    display: block;
+    content: "";
+    background-color: orangered;
+    height: 5px;
+    width: 300px;
+}

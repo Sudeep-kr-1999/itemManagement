@@ -1,0 +1,5 @@
+.devices{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: 1px 1px gray;
+    filter: contrast(1.5);
+}
