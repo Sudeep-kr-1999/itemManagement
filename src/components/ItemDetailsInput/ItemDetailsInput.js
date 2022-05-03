@@ -39,10 +39,12 @@ function ItemDetailsInput({ name, label, placeholder }) {
         />
       ) : (
         <>
-          <select name={name} style={{ width: "100%", height: "100%" }}>
-            <option value={placeholder} selected>
-              {placeholder}
-            </option>
+          <select
+            name={name}
+            style={{ width: "100%", height: "100%" }}
+            value={placeholder}
+          >
+            <option value={placeholder}>{placeholder}</option>
             <option value="PCS">PCS</option>
             <option value="BOXES">BOXES</option>
             <option value="GMS">GMS</option>
