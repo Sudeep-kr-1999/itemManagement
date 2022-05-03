@@ -1,0 +1,11 @@
+.dashboardnav {
+  font-family: sans-serif;
+}
+.usernumber:hover {
+  cursor: pointer;
+  color: darkslategrey;
+}
+.logout:hover {
+  cursor: pointer;
+  color: darkslategray;
+}
