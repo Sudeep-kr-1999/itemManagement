@@ -74,7 +74,7 @@ function SubscriptionCards({
 
       <div className="feature relative flex flex-col items-start ml-4 mt-2">
         {features.map(({ fid, tickType, title }) => (
-          <Features id={fid} tickType={tickType} title={title} />
+          <Features key={fid} tickType={tickType} title={title} />
         ))}
       </div>
       {isMostPopular && (
