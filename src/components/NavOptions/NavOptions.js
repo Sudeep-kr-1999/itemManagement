@@ -13,4 +13,4 @@ function NavOptions({ option }) {
   );
 }
 
-export default NavOptions;
+export default React.memo(NavOptions);

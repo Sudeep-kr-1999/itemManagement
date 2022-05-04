@@ -86,7 +86,7 @@ function SubscriptionCards({
   );
 }
 
-export default SubscriptionCards;
+export default React.memo(SubscriptionCards);
 // #db631a--- diamond
 // #dba249 --- golden
 // #485eb0 -- silver

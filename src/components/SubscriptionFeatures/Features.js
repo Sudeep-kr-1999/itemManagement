@@ -19,4 +19,4 @@ function Features({ tickType, title }) {
   );
 }
 
-export default Features;
+export default React.memo(Features);

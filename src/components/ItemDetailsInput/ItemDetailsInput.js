@@ -1,12 +1,12 @@
 import { TextField } from "@mui/material";
-import React, { useCallback, useContext} from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import "./itemdetailsinput.css";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TableDataContext } from "../StateProvider/StateProvider";
 function ItemDetailsInput({ name, label, placeholder }) {
-  const { setNewEntry, newEntry } = useContext(TableDataContext);
+  const { setNewEntry, newEntry, editData } = useContext(TableDataContext);
   const formatDate = useCallback((date) => {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -18,6 +18,23 @@ function ItemDetailsInput({ name, label, placeholder }) {
 
     return [year, month, day].join("/");
   }, []);
+
+  useEffect(() => {
+    if (editData?.length !== 0) {
+      console.log(editData);
+      setNewEntry(editData[0]);
+    } else {
+      setNewEntry({
+        item_name: "",
+        item_code: "",
+        selling_price: "",
+        purchase_price: "",
+        unit: "",
+        date: "",
+      });
+    }
+  }, [editData]);
+
   return (
     <div className="itemInput relative flex flex-col items-start p-2">
       <span className="label relative block text-lg text-gray-600 p-2">
@@ -85,4 +102,4 @@ function ItemDetailsInput({ name, label, placeholder }) {
   );
 }
 
-export default ItemDetailsInput;
+export default React.memo(ItemDetailsInput);

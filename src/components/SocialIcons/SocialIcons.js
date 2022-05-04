@@ -20,4 +20,4 @@ function SocialIcons({ title }) {
   return <div className="socialicons relative block bg-white shadow-lg rounded-full m-4">{img}</div>;
 }
 
-export default SocialIcons;
+export default React.memo(SocialIcons);

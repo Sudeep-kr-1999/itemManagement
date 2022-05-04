@@ -5,8 +5,13 @@ import { TableDataContext } from "../StateProvider/StateProvider";
 
 import "./dashboardright.css";
 function DashBoardRight() {
-  const { newEntry, setSessionAddCount, sessionAddCount, setNewEntry } =
-    useContext(TableDataContext);
+  const {
+    newEntry,
+    setSessionAddCount,
+    sessionAddCount,
+    setNewEntry,
+    editData,
+  } = useContext(TableDataContext);
   const inputItem = [
     {
       id: 1,
@@ -53,9 +58,21 @@ function DashBoardRight() {
       const currentUser = localStorage.getItem("currentUserPhoneNumber");
       if (localStorage.getItem(currentUser + "data") != null) {
         const data = JSON.parse(localStorage.getItem(currentUser + "data"));
-        data.push(newEntry);
-        localStorage.setItem(currentUser + "data", JSON.stringify(data));
-        setSessionAddCount(sessionAddCount + 1);
+        if (editData?.length !== 0) {
+          const selectedData = data.filter(
+            ({ item_code }) => editData[0].item_code !== item_code
+          );
+          selectedData.push(newEntry);
+          localStorage.setItem(
+            currentUser + "data",
+            JSON.stringify(selectedData)
+          );
+          setSessionAddCount(sessionAddCount + 1);
+        } else {
+          data.push(newEntry);
+          localStorage.setItem(currentUser + "data", JSON.stringify(data));
+          setSessionAddCount(sessionAddCount + 1);
+        }
       } else {
         const data = [];
         data.push(newEntry);
@@ -75,7 +92,7 @@ function DashBoardRight() {
         "Either Of Item Name or Item Code is Missing Please provide required information"
       );
     }
-  }, [newEntry, sessionAddCount, setSessionAddCount,setNewEntry]);
+  }, [newEntry, sessionAddCount, setSessionAddCount, setNewEntry, editData]);
 
   return (
     <div
@@ -125,4 +142,4 @@ function DashBoardRight() {
   );
 }
 
-export default DashBoardRight;
+export default React.memo(DashBoardRight);

@@ -8,4 +8,4 @@ function MiddleLeft({description}) {
   )
 }
 
-export default MiddleLeft
+export default React.memo(MiddleLeft);

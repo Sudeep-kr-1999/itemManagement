@@ -110,4 +110,4 @@ function Subscription() {
   );
 }
 
-export default Subscription;
+export default React.memo(Subscription);

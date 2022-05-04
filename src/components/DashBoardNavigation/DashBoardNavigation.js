@@ -32,4 +32,4 @@ function DashBoardNavigation() {
   );
 }
 
-export default DashBoardNavigation;
+export default React.memo(DashBoardNavigation);

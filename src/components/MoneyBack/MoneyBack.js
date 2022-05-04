@@ -19,4 +19,4 @@ function MoneyBack() {
   );
 }
 
-export default MoneyBack;
+export default React.memo(MoneyBack);

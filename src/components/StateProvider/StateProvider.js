@@ -3,6 +3,7 @@ export const TableDataContext = createContext();
 function StateProvider({ children }) {
   const [tabledata, settabledata] = useState([]);
   const [sessionAddCount, setsessionAddCount] = useState(0);
+  const [editData, seteditData] = useState([]);
   const [newEntry, setnewEntry] = useState({
     item_name: "",
     item_code: "",
@@ -11,6 +12,10 @@ function StateProvider({ children }) {
     unit: "",
     date: "",
   });
+
+  const setEditData = (editData) => {
+    seteditData(editData);
+  };
   const setTableData = (data) => {
     settabledata(data);
   };
@@ -30,6 +35,8 @@ function StateProvider({ children }) {
         setNewEntry,
         sessionAddCount,
         setSessionAddCount,
+        editData,
+        setEditData,
       }}
     >
       {children}

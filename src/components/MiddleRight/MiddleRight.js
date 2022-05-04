@@ -8,4 +8,4 @@ function MiddleRight({description}) {
   )
 }
 
-export default MiddleRight
+export default React.memo(MiddleRight);

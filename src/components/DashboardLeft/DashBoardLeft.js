@@ -7,7 +7,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { TableDataContext } from "../StateProvider/StateProvider";
 function DashBoardLeft() {
   const [currentUser, setcurrentUser] = useState("");
-  const { tabledata, setTableData, sessionAddCount} =
+  const [searchValue, setsearchValue] = useState("");
+  const { tabledata, setTableData, sessionAddCount,setEditData } =
     useContext(TableDataContext);
   const columns = [
     { field: "item_name", headerName: "ITEM NAME", width: 150 },
@@ -19,17 +20,33 @@ function DashBoardLeft() {
   ];
 
   useEffect(() => {
-    if (localStorage.getItem("currentUserPhoneNumber") != null) {
-      setcurrentUser(localStorage.getItem("currentUserPhoneNumber"));
-      if (localStorage.getItem(currentUser + "data") != null) {
-        const data = JSON.parse(localStorage.getItem(currentUser + "data"));
-        console.log(data);
-        setTableData(data);
+    if (searchValue === "") {
+      if (localStorage.getItem("currentUserPhoneNumber") != null) {
+        setcurrentUser(localStorage.getItem("currentUserPhoneNumber"));
+        if (localStorage.getItem(currentUser + "data") != null) {
+          const data = JSON.parse(localStorage.getItem(currentUser + "data"));
+          setTableData(data);
+        }
+      } else {
+        setcurrentUser("");
       }
     } else {
-      setcurrentUser("");
+      if (localStorage.getItem("currentUserPhoneNumber") != null) {
+        setcurrentUser(localStorage.getItem("currentUserPhoneNumber"));
+        if (localStorage.getItem(currentUser + "data") != null) {
+          const data = JSON.parse(localStorage.getItem(currentUser + "data"));
+          console.log(data);
+          const showdata = data.filter(
+            ({ item_code, item_name }) =>
+              searchValue === item_code || searchValue === item_name
+          );
+          setTableData(showdata);
+        }
+      } else {
+        setcurrentUser("");
+      }
     }
-  }, [currentUser, sessionAddCount]);
+  }, [currentUser, sessionAddCount, searchValue]);
 
   return (
     <div
@@ -45,6 +62,8 @@ function DashBoardLeft() {
             <TextField
               variant="outlined"
               placeholder="Search Items"
+              value={searchValue}
+              onChange={(e) => setsearchValue(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -64,9 +83,18 @@ function DashBoardLeft() {
           rows={tabledata}
           columns={columns}
           getRowId={(row) => row.item_code}
+          checkboxSelection
+          onSelectionModelChange={(item) => {
+            const data = JSON.parse(localStorage.getItem(currentUser + "data"));
+            const selectedData = data.filter(
+              ({ item_code }) => item[0] === item_code
+            );
+            console.log(selectedData);
+            setEditData(selectedData);
+          }}
         />
       </div>
     </div>
   );
 }
-export default DashBoardLeft;
+export default React.memo(DashBoardLeft);

@@ -18,4 +18,4 @@ function DisplayPage() {
   );
 }
 
-export default DisplayPage;
+export default React.memo(DisplayPage);

@@ -19,4 +19,4 @@ function DataElement({ data, label, id }) {
   );
 }
 
-export default DataElement;
+export default React.memo(DataElement);

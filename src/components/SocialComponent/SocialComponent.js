@@ -27,4 +27,4 @@ function SocialComponent({ name, type }) {
   );
 }
 
-export default SocialComponent;
+export default React.memo(SocialComponent);
