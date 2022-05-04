@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./dashboardnav.css";
+import { TableDataContext } from "../StateProvider/StateProvider";
 function DashBoardNavigation() {
   const [userPhoneNumber, setuserPhoneNumber] = useState("");
+  const { setSessionAddCount } = useContext(TableDataContext);
   let navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("currentUserPhoneNumber") != null) {
@@ -15,7 +17,8 @@ function DashBoardNavigation() {
   const logout = useCallback(() => {
     navigate("/");
     localStorage.removeItem("currentUserPhoneNumber");
-  }, [navigate]);
+    setSessionAddCount(0);
+  }, [navigate, setSessionAddCount]);
 
   return (
     <div className="dashboardnav relative flex border-2 p-4 justify-between">

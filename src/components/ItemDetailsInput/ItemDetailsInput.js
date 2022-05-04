@@ -1,10 +1,12 @@
 import { TextField } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext} from "react";
 import "./itemdetailsinput.css";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TableDataContext } from "../StateProvider/StateProvider";
 function ItemDetailsInput({ name, label, placeholder }) {
+  const { setNewEntry, newEntry } = useContext(TableDataContext);
   const formatDate = useCallback((date) => {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -14,9 +16,8 @@ function ItemDetailsInput({ name, label, placeholder }) {
     if (month.length < 2) month = "0" + month;
     if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join("-");
+    return [year, month, day].join("/");
   }, []);
-
   return (
     <div className="itemInput relative flex flex-col items-start p-2">
       <span className="label relative block text-lg text-gray-600 p-2">
@@ -26,23 +27,35 @@ function ItemDetailsInput({ name, label, placeholder }) {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             placeholder={placeholder}
+            name={name}
+            value={newEntry[name]}
+            onChange={(newValue) =>
+              setNewEntry((previousState) => {
+                return {
+                  ...previousState,
+                  [name]: formatDate(newValue),
+                };
+              })
+            }
             renderInput={(params) => (
               <TextField {...params} sx={{ width: "100%" }} />
             )}
           />
         </LocalizationProvider>
-      ) : name !== "unit" ? (
-        <TextField
-          name={name}
-          placeholder={placeholder}
-          style={{ width: "100%" }}
-        />
-      ) : (
+      ) : name === "unit" ? (
         <>
           <select
             name={name}
             style={{ width: "100%", height: "100%" }}
-            value={placeholder}
+            value={newEntry[name]}
+            onChange={(event) =>
+              setNewEntry((previousState) => {
+                return {
+                  ...previousState,
+                  [name]: event.target.value,
+                };
+              })
+            }
           >
             <option value={placeholder}>{placeholder}</option>
             <option value="PCS">PCS</option>
@@ -52,6 +65,21 @@ function ItemDetailsInput({ name, label, placeholder }) {
             <option value="LTR">LTR</option>
           </select>
         </>
+      ) : (
+        <TextField
+          name={name}
+          placeholder={placeholder}
+          value={newEntry[name]}
+          onChange={(event) =>
+            setNewEntry((previousState) => {
+              return {
+                ...previousState,
+                [name]: event.target.value,
+              };
+            })
+          }
+          style={{ width: "100%" }}
+        />
       )}
     </div>
   );

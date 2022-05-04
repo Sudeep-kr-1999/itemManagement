@@ -1,8 +1,12 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import ItemDetailsInput from "../ItemDetailsInput/ItemDetailsInput";
+import { TableDataContext } from "../StateProvider/StateProvider";
+
 import "./dashboardright.css";
 function DashBoardRight() {
+  const { newEntry, setSessionAddCount, sessionAddCount, setNewEntry } =
+    useContext(TableDataContext);
   const inputItem = [
     {
       id: 1,
@@ -43,6 +47,36 @@ function DashBoardRight() {
       placeholder: "Select Date",
     },
   ];
+
+  const addData = useCallback(() => {
+    if (newEntry.item_name !== "" && newEntry.item_code !== "") {
+      const currentUser = localStorage.getItem("currentUserPhoneNumber");
+      if (localStorage.getItem(currentUser + "data") != null) {
+        const data = JSON.parse(localStorage.getItem(currentUser + "data"));
+        data.push(newEntry);
+        localStorage.setItem(currentUser + "data", JSON.stringify(data));
+        setSessionAddCount(sessionAddCount + 1);
+      } else {
+        const data = [];
+        data.push(newEntry);
+        setSessionAddCount(sessionAddCount + 1);
+        localStorage.setItem(currentUser + "data", JSON.stringify(data));
+      }
+      setNewEntry({
+        item_name: "",
+        item_code: "",
+        selling_price: "",
+        purchase_price: "",
+        unit: "",
+        date: "",
+      });
+    } else {
+      alert(
+        "Either Of Item Name or Item Code is Missing Please provide required information"
+      );
+    }
+  }, [newEntry, sessionAddCount, setSessionAddCount,setNewEntry]);
+
   return (
     <div
       className="dashboardright relative flex flex-col h-full border-l-2"
@@ -79,6 +113,7 @@ function DashBoardRight() {
           variant="contained"
           disableElevation
           fullWidth
+          onClick={addData}
           sx={{
             backgroundColor: "purple",
           }}
