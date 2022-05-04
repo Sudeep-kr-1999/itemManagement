@@ -1,9 +1,57 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import API from "../axios/axios";
 import "../HomePage/homepage.css";
 import iso from "../HomePage/assets/iso.png";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 function Homepage() {
+  let navigate = useNavigate();
+  const [phoneNumber, setphoneNumber] = useState("");
+  const [otp, setotp] = useState("");
+  const clearTimeOut = useRef(null);
+
+  const setPhoneandFindOTP = useCallback((value) => {
+    setphoneNumber(value);
+  }, []);
+
+  const loginFunction = useCallback(() => {
+    console.log(phoneNumber);
+    console.log(otp);
+    console.log("login");
+    API.post(`authenticate`, { mobile_number: phoneNumber, otp_code: otp })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response.data);
+          if (response.data.mobile_number === phoneNumber) {
+            console.log("data verified");
+            navigate("dashboard");
+            localStorage.setItem("currentUserPhoneNumber", phoneNumber);
+          }
+        }
+      })
+      .catch((error) => alert("Some error occured please try again"));
+  }, [otp, phoneNumber, navigate]);
+
+  const callAPI = useCallback(() => {
+    clearTimeout(clearTimeOut.current);
+    clearTimeOut.current = setTimeout(() => {
+      API.post(`request_otp`, { mobile_number: phoneNumber })
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response.data);
+          }
+        })
+        .catch((error) => alert("Some Error Occured please try again"));
+    }, 500);
+  }, [phoneNumber]);
+
+  useEffect(() => {
+    if (phoneNumber.length === 10) {
+      callAPI();
+    }
+  }, [phoneNumber]);
+
   return (
     <div className="home-parent relative block">
       <div
@@ -61,6 +109,8 @@ function Homepage() {
               <TextField
                 id="outlined-basic"
                 variant="outlined"
+                value={phoneNumber}
+                onChange={(event) => setPhoneandFindOTP(event.target.value)}
                 sx={{
                   flex: 1,
                   marginRight: "50px",
@@ -77,6 +127,8 @@ function Homepage() {
                 label="One Time Password"
                 id="outlined-basic"
                 variant="outlined"
+                value={otp}
+                onChange={(event) => setotp(event.target.value)}
                 sx={{
                   flex: 1,
                   marginRight: "50px",
@@ -92,8 +144,8 @@ function Homepage() {
             style={{ width: "25rem" }}
           >
             <Button
-              disableElevation
               variant="contained"
+              onClick={loginFunction}
               sx={{
                 width: "25rem",
                 marginTop: "20px",
