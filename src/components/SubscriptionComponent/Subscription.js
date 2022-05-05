@@ -42,7 +42,7 @@ function Subscription() {
     {
       id: 2,
       planName: "Golden Plan",
-      previousRate: "1299",
+      previousRate: "2599",
       currentRate: "1799/year",
       devices: "Mobile + Desktop",
       isMostPopular: true,
@@ -70,7 +70,7 @@ function Subscription() {
       id: 3,
       planName: "Diamond Plan",
       currentRate: "3500/year",
-      previousRate: "1299",
+      previousRate: "4599",
       devices: "Mobile + Desktop",
       isMostPopular: false,
       customcolor: "#db631a",
