@@ -25,8 +25,10 @@ function Homepage() {
           console.log(response.data);
           if (response.data.mobile_number === phoneNumber) {
             console.log("data verified");
-            navigate("dashboard");
             localStorage.setItem("currentUserPhoneNumber", phoneNumber);
+            if (localStorage.getItem("currentUserPhoneNumber") != null) {
+              navigate("dashboard");
+            }
           }
         }
       })
